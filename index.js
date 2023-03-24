@@ -15,11 +15,23 @@ const maxPage = 1;
 const page = 1;
 const searchQuery = "";
 
-const newCard = createCharacterCard(
-  "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-  "Roland-Rick",
-  "zombee",
-  "human",
-  55
-);
-cardContainer.append(newCard);
+async function fetchCharacters() {
+  cardContainer.innerHTML = "";
+  const response = await fetch("https://rickandmortyapi.com/api/character");
+  console.log("response: ", response);
+  const data = await response.json(); // json() ist eine Methode, die nur auf ein Response-Objekt ausgeführt werden kann.
+  console.log("data: ", data); //        sie liest den Response aus und liefert aus dem Response-Body das fertige JS-Objekt
+  return data;
+}
+const fetchedData = await fetchCharacters();
+console.log("fetchedData.results: ", fetchedData.results);
+fetchedData.results.map((result) => {
+  const newCard = createCharacterCard(
+    result.image,
+    result.name,
+    result.status,
+    result.type,
+    result.episode.length
+  );
+  cardContainer.append(newCard);
+});
