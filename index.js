@@ -11,27 +11,44 @@ const nextButton = document.querySelector('[data-js="button-next"]');
 const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-const maxPage = 1;
-const page = 1;
-const searchQuery = "";
+let maxPages = 1; // need to make it let
+let page = 1;
+let searchQuery = `https://rickandmortyapi.com/api/character?page=`;
+
+fetchCharacters(); //first fetch
 
 async function fetchCharacters() {
   cardContainer.innerHTML = "";
-  const response = await fetch("https://rickandmortyapi.com/api/character");
+  const response = await fetch(searchQuery + page);
   console.log("response: ", response);
   const data = await response.json(); // json() ist eine Methode, die nur auf ein Response-Objekt ausgeführt werden kann.
   console.log("data: ", data); //        sie liest den Response aus und liefert aus dem Response-Body das fertige JS-Objekt
-  return data;
+  maxPages = data.info.pages;
+  console.log("maxPages: ", maxPages);
+
+  data.results.map((result) => {
+    const newCard = createCharacterCard(
+      result.image,
+      result.name,
+      result.status,
+      result.type,
+      result.episode.length
+    );
+    cardContainer.append(newCard);
+  });
+
+  pagination.textContent = `${page} / ${maxPages}`;
 }
-const fetchedData = await fetchCharacters();
-console.log("fetchedData.results: ", fetchedData.results);
-fetchedData.results.map((result) => {
-  const newCard = createCharacterCard(
-    result.image,
-    result.name,
-    result.status,
-    result.type,
-    result.episode.length
-  );
-  cardContainer.append(newCard);
+
+prevButton.addEventListener("click", () => {
+  if (page > 1) {
+    page--;
+    fetchCharacters();
+  }
+});
+nextButton.addEventListener("click", () => {
+  if (page < maxPages) {
+    page++;
+    fetchCharacters();
+  }
 });
