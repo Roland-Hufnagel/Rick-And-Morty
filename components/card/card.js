@@ -23,3 +23,4 @@ export function createCharacterCard(src, name, status, type, occurrencies) {
   </div>`;
   return card;
 }
+
