@@ -1,4 +1,4 @@
-export function createCharacterCard(src, name, status, type, occurrencies) {
+export default function createCharacterCard(src, name, status, type, occurrencies) {
   const card = document.createElement("li");
   card.classList.add("card");
   card.innerHTML = `
