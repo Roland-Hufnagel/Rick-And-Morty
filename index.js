@@ -39,8 +39,8 @@ const url = `https://rickandmortyapi.com/api/character`;
 
 fetchCharacters(page, searchQuery); //first fetch
 
-async function fetchCharacters(page, searchString) {
-  cardContainer.innerHTML = "";
+async function fetchCharacters(page, searchString) {//  Die Methode selbst soll sich um die Implementierung kümmern. Darum
+  cardContainer.innerHTML = "";//                       wird der String in der fetch-Funktion gebaut statt in den Aufrufen!
   const response = await fetch(`${url}?page=${page}&name=${searchString}`);
   console.log("response: ", response);
   const data = await response.json(); // json() ist eine Methode, die nur auf ein Response-Objekt ausgeführt werden kann.
