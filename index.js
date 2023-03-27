@@ -16,13 +16,13 @@ const navigation = document.querySelector('[data-js="navigation"]');
 const prevButton = createButton("PREVIOUS", () => {
   if (page > 1) {
     page--;
-    fetchCharacters(url + "?page=" + page + "&name=" + searchQuery);
+    fetchCharacters(page, searchQuery);
   }
 });
 const nextButton = createButton("NEXT", () => {
   if (page < maxPages) {
     page++;
-    fetchCharacters(url + "?page=" + page + "&name=" + searchQuery);
+    fetchCharacters(page, searchQuery);
   }
 });
 const pagination = createPagination();
@@ -37,11 +37,11 @@ let page = 1;
 let searchQuery = "";
 const url = `https://rickandmortyapi.com/api/character`;
 
-fetchCharacters(url); //first fetch
+fetchCharacters(page, searchQuery); //first fetch
 
-async function fetchCharacters(url) {
+async function fetchCharacters(page, searchString) {
   cardContainer.innerHTML = "";
-  const response = await fetch(url);
+  const response = await fetch(`${url}?page=${page}&name=${searchString}`);
   console.log("response: ", response);
   const data = await response.json(); // json() ist eine Methode, die nur auf ein Response-Objekt ausgeführt werden kann.
   console.log("data: ", data); //        sie liest den Response aus und liefert aus dem Response-Body das fertige JS-Objekt
@@ -83,5 +83,5 @@ function handleSubmit(event) {
   event.preventDefault();
   searchQuery = event.target.elements.query.value;
   page = 1;
-  fetchCharacters(url + "?page=" + page + "&name=" + searchQuery);
+  fetchCharacters(page, searchQuery);
 }
